@@ -4,12 +4,8 @@ plugins {
 }
 
 kotlin {
-    ios {
-        binaries.framework("OtiFramework") {
-            baseName = "OtiFramework"
-            export("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-        }
-    }
+    iosArm64()
+    iosSimulatorArm64()
 
     sourceSets {
         val commonMain by getting {
@@ -17,7 +13,6 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
             }
         }
-        val iosMain by getting
     }
 }
 
@@ -26,9 +21,5 @@ android {
     compileSdk = 34
     defaultConfig {
         minSdk = 21
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
 }
