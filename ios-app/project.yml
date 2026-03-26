@@ -1,0 +1,29 @@
+name: Oti
+options:
+  bundleIdPrefix: com.oti
+  deploymentTarget:
+    iOS: "12.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "2"
+    INFOPLIST_FILE: Oti/Info.plist
+
+targets:
+  Oti:
+    type: application
+    platform: iOS
+    sources:
+      - path: Oti
+        excludes:
+          - "*.plist"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.oti.app
+        INFOPLIST_FILE: Oti/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
