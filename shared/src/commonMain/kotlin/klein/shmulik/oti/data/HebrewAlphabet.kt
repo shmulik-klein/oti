@@ -7,6 +7,19 @@ data class HebrewLetter(
     val order: Int
 )
 
+data class NikudMark(
+    val symbol: String,
+    val name: String,
+    val pronunciation: String
+)
+
+data class NikudEntry(
+    val letter: HebrewLetter,
+    val nikud: NikudMark,
+    val combined: String,
+    val audioText: String
+)
+
 object HebrewAlphabet {
     val letters = listOf(
         HebrewLetter("א", "אלף", "alef", 1),
@@ -32,4 +45,38 @@ object HebrewAlphabet {
         HebrewLetter("ש", "שין", "shin", 21),
         HebrewLetter("ת", "תאו", "tav", 22)
     )
+
+    val nikudMarks = listOf(
+        NikudMark("ַ", "פַּתַח", "a"),
+        NikudMark("ָ", "קָמַץ", "a"),
+        NikudMark("ֶ", "סֶגוֹל", "e"),
+        NikudMark("ִ", "חִירֵק", "i"),
+        NikudMark("ֵ", "צֵירֵי", "e"),
+        NikudMark("ְ", "שְׁוָא", "e"),
+        NikudMark("וּ", "שׁוּרוּק", "u"),
+        NikudMark("וֹ", "חוֹלָם", "o")
+    )
+
+    fun generateNikudEntries(): List<NikudEntry> {
+        val entries = mutableListOf<NikudEntry>()
+        val vowels = listOf("ַ", "ָ", "ֶ", "ִ", "ֵ", "וּ", "וֹ")
+        val vowelSounds = mapOf(
+            "ַ" to "אַ",
+            "ָ" to "אָ",
+            "ֶ" to "אֶ",
+            "ִ" to "אִ",
+            "ֵ" to "אֵ",
+            "וּ" to "אוּ",
+            "וֹ" to "אוֹ"
+        )
+        
+        for (letter in letters) {
+            for (nikud in nikudMarks) {
+                val combined = letter.character + nikud.symbol
+                val audioText = vowelSounds[nikud.symbol] ?: (letter.character + nikud.pronunciation)
+                entries.add(NikudEntry(letter, nikud, combined, audioText))
+            }
+        }
+        return entries
+    }
 }
