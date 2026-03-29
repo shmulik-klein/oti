@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Oti - אוֹתִיּוֹת</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .letter-display {
+            background: white;
+            border-radius: 24px;
+            padding: 60px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .hebrew-letter {
+            font-size: 180px;
+            color: #333;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+        
+        .letter-name {
+            font-size: 48px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .letter-transliteration {
+            font-size: 24px;
+            color: #999;
+        }
+        
+        .counter {
+            font-size: 20px;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .nav-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: #0056b3;
+        }
+        
+        .nav-btn:hover {
+            background: #0056b3;
+        }
+        
+        .title {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 600px) {
+            .hebrew-letter {
+                font-size: 120px;
+            }
+            .letter-name {
+                font-size: 36px;
+            }
+            .letter-display {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">אוֹתִיּוֹת</h1>
+        
+        <div class="letter-display">
+            <div class="hebrew-letter" id="letter">א</div>
+            <div class="letter-name" id="name">אלף</div>
+            <div class="letter-transliteration" id="transliteration">alef</div>
+        </div>
+        
+        <div class="counter">
+            <span id="current">1</span> / <span id="total">22</span>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prev">←</button>
+            <button class="nav-btn" id="next">→</button>
+        </div>
+    </div>
+    
+    <script src="web.js"></script>
+</body>
+</html>

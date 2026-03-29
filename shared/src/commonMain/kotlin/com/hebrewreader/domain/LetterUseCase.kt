@@ -1,7 +1,7 @@
-package com.oti.domain
+package com.hebrewreader.domain
 
-import com.oti.data.HebrewAlphabet
-import com.oti.data.HebrewLetter
+import com.hebrewreader.data.HebrewAlphabet
+import com.hebrewreader.data.HebrewLetter
 
 class LetterUseCase {
     fun getAllLetters(): List<HebrewLetter> = HebrewAlphabet.letters

@@ -9,9 +9,9 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        val jsMain by getting {
             dependencies {
-                implementation(kotlin("stdlib"))
+                implementation(project(":shared"))
             }
         }
     }

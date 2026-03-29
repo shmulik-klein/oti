@@ -1,4 +1,4 @@
-package com.oti.data
+package com.hebrewreader.data
 
 data class HebrewLetter(
     val character: String,

@@ -24,4 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "oti"
 include(":shared")
-include(":ios-app")
+include(":web")
