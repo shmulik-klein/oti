@@ -109,16 +109,17 @@
         .mode-toggle {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
         
         .mode-btn {
             background: #e0e0e0;
             color: #666;
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
+            padding: 10px 18px;
+            font-size: 14px;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.2s;
@@ -128,6 +129,20 @@
         .mode-btn.active {
             background: #007AFF;
             color: white;
+        }
+        
+        .word-category {
+            font-size: 14px;
+            color: #4a90d9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .word-translation {
+            font-size: 28px;
+            color: #4CAF50;
+            margin-top: 10px;
         }
         
         .nikud-name {
@@ -156,13 +171,16 @@
         <div class="mode-toggle">
             <button class="mode-btn active" id="mode-letters">אוֹתִיּוֹת</button>
             <button class="mode-btn" id="mode-nikud">נִיקּוּד</button>
+            <button class="mode-btn" id="mode-words">מִלִּים</button>
         </div>
         
         <div class="letter-display" id="letter-display">
+            <div class="word-category" id="category"></div>
             <div class="hebrew-letter" id="letter">א</div>
             <div class="letter-name" id="name">אלף</div>
             <div class="nikud-name" id="nikud-name"></div>
             <div class="letter-transliteration" id="transliteration">alef</div>
+            <div class="word-translation" id="translation"></div>
             <div class="tap-hint">Tap to hear</div>
         </div>
         
