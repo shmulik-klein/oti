@@ -19,6 +19,19 @@ fun main() {
     val totalElement = document.getElementById("total") as HTMLElement
     val prevButton = document.getElementById("prev") as HTMLButtonElement
     val nextButton = document.getElementById("next") as HTMLButtonElement
+    val letterDisplay = document.getElementById("letter-display") as HTMLElement
+
+    @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+    val synth = window.asDynamic().speechSynthesis
+
+    fun speak(text: String) {
+        if (synth != undefined) {
+            synth.cancel()
+            val utterance = js("new SpeechSynthesisUtterance(text)")
+            utterance.lang = "he-IL"
+            synth.speak(utterance)
+        }
+    }
 
     fun updateDisplay() {
         val letter = useCase.getLetter(currentIndex)
@@ -30,6 +43,11 @@ fun main() {
             totalElement.textContent = useCase.getTotalCount().toString()
         }
     }
+
+    letterDisplay.addEventListener("click", { _: Event ->
+        val letter = useCase.getLetter(currentIndex)
+        letter?.let { speak(it.name) }
+    })
 
     prevButton.addEventListener("click", { _: Event ->
         currentIndex = useCase.getPreviousLetter(currentIndex)
@@ -51,6 +69,10 @@ fun main() {
             "ArrowRight" -> {
                 currentIndex = useCase.getPreviousLetter(currentIndex)
                 updateDisplay()
+            }
+            " " -> {
+                val letter = useCase.getLetter(currentIndex)
+                letter?.let { speak(it.name) }
             }
         }
     })

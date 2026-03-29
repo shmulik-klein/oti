@@ -34,6 +34,19 @@
             padding: 60px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             margin-bottom: 40px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .letter-display:active {
+            transform: scale(0.98);
+        }
+        
+        .tap-hint {
+            font-size: 14px;
+            color: #bbb;
+            margin-top: 10px;
         }
         
         .hebrew-letter {
@@ -110,10 +123,11 @@
     <div class="container">
         <h1 class="title">אוֹתִיּוֹת</h1>
         
-        <div class="letter-display">
+        <div class="letter-display" id="letter-display">
             <div class="hebrew-letter" id="letter">א</div>
             <div class="letter-name" id="name">אלף</div>
             <div class="letter-transliteration" id="transliteration">alef</div>
+            <div class="tap-hint">Tap to hear</div>
         </div>
         
         <div class="counter">
