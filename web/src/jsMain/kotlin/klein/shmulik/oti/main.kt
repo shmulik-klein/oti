@@ -1,5 +1,7 @@
 package klein.shmulik.oti
 
+import klein.shmulik.oti.data.QuizQuestion
+import klein.shmulik.oti.data.QuizType
 import klein.shmulik.oti.domain.LetterUseCase
 import kotlinx.browser.document
 import kotlinx.browser.window
@@ -9,12 +11,16 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 
-enum class DisplayMode { LETTERS, NIKUD, WORDS }
+enum class DisplayMode { LETTERS, NIKUD, WORDS, QUIZ }
 
 fun main() {
     val useCase = LetterUseCase()
     var currentIndex = 0
     var currentMode = DisplayMode.LETTERS
+    var quizQuestions: List<QuizQuestion> = emptyList()
+    var quizScore = 0
+    var quizAnswered = false
+    var selectedQuizType = QuizType.LETTER_TO_NAME
 
     val letterElement = document.getElementById("letter") as HTMLElement
     val nameElement = document.getElementById("name") as HTMLElement
@@ -30,6 +36,17 @@ fun main() {
     val modeLettersBtn = document.getElementById("mode-letters") as HTMLButtonElement
     val modeNikudBtn = document.getElementById("mode-nikud") as HTMLButtonElement
     val modeWordsBtn = document.getElementById("mode-words") as HTMLButtonElement
+    val modeQuizBtn = document.getElementById("mode-quiz") as HTMLButtonElement
+    val learnContainer = document.getElementById("learn-container") as HTMLElement
+    val quizContainer = document.getElementById("quiz-container") as HTMLElement
+    val quizTypeContainer = document.getElementById("quiz-type-container") as HTMLElement
+    val quizQuestionElement = document.getElementById("quiz-question") as HTMLElement
+    val quizHintElement = document.getElementById("quiz-hint") as HTMLElement
+    val quizOptionsElement = document.getElementById("quiz-options") as HTMLElement
+    val quizScoreElement = document.getElementById("quiz-score") as HTMLElement
+    val quizNextButton = document.getElementById("quiz-next") as HTMLButtonElement
+    val quizLetterNameBtn = document.getElementById("quiz-letter-name") as HTMLButtonElement
+    val quizNameLetterBtn = document.getElementById("quiz-name-letter") as HTMLButtonElement
 
     fun playAudio(fileName: String) {
         if (fileName.isNotEmpty()) {
@@ -142,6 +159,60 @@ fun main() {
         }
     }
 
+    fun showQuizQuestion() {
+        if (currentIndex >= quizQuestions.size) {
+            quizQuestionElement.textContent = "Done!"
+            quizHintElement.textContent = "Score: $quizScore / ${quizQuestions.size}"
+            quizOptionsElement.innerHTML = ""
+            quizNextButton.textContent = "Play Again"
+            return
+        }
+
+        val question = quizQuestions[currentIndex]
+        quizScoreElement.textContent = "Question ${currentIndex + 1} / ${quizQuestions.size}"
+        quizQuestionElement.textContent = question.questionText
+        quizHintElement.textContent = "Choose the correct answer"
+        
+        quizOptionsElement.innerHTML = ""
+        quizAnswered = false
+        
+        for (option in question.options) {
+            val btn = document.createElement("button")
+            btn.textContent = option
+            btn.className = "quiz-option"
+            btn.addEventListener("click", { _: Event ->
+                if (!quizAnswered) {
+                    quizAnswered = true
+                    if (option == question.correctAnswer) {
+                        btn.classList.add("correct")
+                        quizScore++
+                    } else {
+                        btn.classList.add("wrong")
+                        @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+                        val children = quizOptionsElement.asDynamic().children
+                        for (i in 0 until children.length) {
+                            val child = children[i] as HTMLElement
+                            if (child.textContent == question.correctAnswer) {
+                                child.classList.add("correct")
+                            }
+                        }
+                    }
+                    quizNextButton.textContent = "Next"
+                }
+            })
+            quizOptionsElement.appendChild(btn)
+        }
+    }
+
+    fun startQuiz(type: QuizType) {
+        selectedQuizType = type
+        quizQuestions = useCase.startQuiz(type)
+        currentIndex = 0
+        quizScore = 0
+        quizAnswered = false
+        showQuizQuestion()
+    }
+
     letterDisplay.addEventListener("click", { _: Event ->
         speakCurrent()
     })
@@ -156,18 +227,65 @@ fun main() {
         updateDisplay()
     })
 
+    quizNextButton.addEventListener("click", { _: Event ->
+        if (quizNextButton.textContent == "Play Again") {
+            startQuiz(selectedQuizType)
+        } else {
+            currentIndex++
+            showQuizQuestion()
+        }
+    })
+
+    quizLetterNameBtn.addEventListener("click", { _: Event ->
+        quizLetterNameBtn.classList.add("active")
+        quizNameLetterBtn.classList.remove("active")
+        startQuiz(QuizType.LETTER_TO_NAME)
+    })
+
+    quizNameLetterBtn.addEventListener("click", { _: Event ->
+        quizNameLetterBtn.classList.add("active")
+        quizLetterNameBtn.classList.remove("active")
+        startQuiz(QuizType.NAME_TO_LETTER)
+    })
+
     fun setMode(mode: DisplayMode) {
         currentMode = mode
         currentIndex = 0
         modeLettersBtn.classList.remove("active")
         modeNikudBtn.classList.remove("active")
         modeWordsBtn.classList.remove("active")
+        modeQuizBtn.classList.remove("active")
+        
         when (mode) {
-            DisplayMode.LETTERS -> modeLettersBtn.classList.add("active")
-            DisplayMode.NIKUD -> modeNikudBtn.classList.add("active")
-            DisplayMode.WORDS -> modeWordsBtn.classList.add("active")
+            DisplayMode.LETTERS -> {
+                modeLettersBtn.classList.add("active")
+                learnContainer.classList.remove("hidden")
+                quizContainer.classList.remove("active")
+                quizTypeContainer.style.display = "none"
+                updateDisplay()
+            }
+            DisplayMode.NIKUD -> {
+                modeNikudBtn.classList.add("active")
+                learnContainer.classList.remove("hidden")
+                quizContainer.classList.remove("active")
+                quizTypeContainer.style.display = "none"
+                updateDisplay()
+            }
+            DisplayMode.WORDS -> {
+                modeWordsBtn.classList.add("active")
+                learnContainer.classList.remove("hidden")
+                quizContainer.classList.remove("active")
+                quizTypeContainer.style.display = "none"
+                updateDisplay()
+            }
+            DisplayMode.QUIZ -> {
+                modeQuizBtn.classList.add("active")
+                learnContainer.classList.add("hidden")
+                quizContainer.classList.add("active")
+                quizTypeContainer.style.display = "flex"
+                startQuiz(QuizType.LETTER_TO_NAME)
+            }
         }
-        updateDisplay()
     }
 
     modeLettersBtn.addEventListener("click", { _: Event ->
@@ -182,7 +300,13 @@ fun main() {
         setMode(DisplayMode.WORDS)
     })
 
+    modeQuizBtn.addEventListener("click", { _: Event ->
+        setMode(DisplayMode.QUIZ)
+    })
+
     window.addEventListener("keydown", { event: Event ->
+        if (currentMode == DisplayMode.QUIZ) return@addEventListener
+        
         val keyEvent = event as KeyboardEvent
         when (keyEvent.key) {
             "ArrowLeft" -> {

@@ -2,12 +2,18 @@ package klein.shmulik.oti.domain
 
 import klein.shmulik.oti.data.HebrewAlphabet
 import klein.shmulik.oti.data.HebrewLetter
+import klein.shmulik.oti.data.HebrewQuiz
 import klein.shmulik.oti.data.HebrewWord
 import klein.shmulik.oti.data.HebrewWords
 import klein.shmulik.oti.data.NikudEntry
+import klein.shmulik.oti.data.QuizQuestion
+import klein.shmulik.oti.data.QuizType
 
 class LetterUseCase {
     private val nikudEntries = HebrewAlphabet.generateNikudEntries()
+    private var letterToNameQuiz: List<QuizQuestion> = emptyList()
+    private var nameToLetterQuiz: List<QuizQuestion> = emptyList()
+    private var currentQuizType: QuizType = QuizType.LETTER_TO_NAME
     
     fun getAllLetters(): List<HebrewLetter> = HebrewAlphabet.letters
     fun getNikudEntries(): List<NikudEntry> = nikudEntries
@@ -58,4 +64,23 @@ class LetterUseCase {
     fun getLetterCount(): Int = HebrewAlphabet.letters.size
     fun getNikudCount(): Int = nikudEntries.size
     fun getWordCount(): Int = HebrewWords.words.size
+
+    fun startQuiz(type: QuizType): List<QuizQuestion> {
+        currentQuizType = type
+        letterToNameQuiz = HebrewQuiz.generateLetterToNameQuiz()
+        nameToLetterQuiz = HebrewQuiz.generateNameToLetterQuiz()
+        return when (type) {
+            QuizType.LETTER_TO_NAME -> letterToNameQuiz
+            QuizType.NAME_TO_LETTER -> nameToLetterQuiz
+            QuizType.LETTER_TO_SOUND -> letterToNameQuiz
+        }
+    }
+
+    fun getCurrentQuiz(): List<QuizQuestion> = when (currentQuizType) {
+        QuizType.LETTER_TO_NAME -> letterToNameQuiz
+        QuizType.NAME_TO_LETTER -> nameToLetterQuiz
+        QuizType.LETTER_TO_SOUND -> letterToNameQuiz
+    }
+
+    fun getCurrentQuizType(): QuizType = currentQuizType
 }
