@@ -3,11 +3,13 @@ package klein.shmulik.oti.domain
 import klein.shmulik.oti.data.HebrewAlphabet
 import klein.shmulik.oti.data.HebrewLetter
 import klein.shmulik.oti.data.HebrewQuiz
+import klein.shmulik.oti.data.HebrewStories
 import klein.shmulik.oti.data.HebrewWord
 import klein.shmulik.oti.data.HebrewWords
 import klein.shmulik.oti.data.NikudEntry
 import klein.shmulik.oti.data.QuizQuestion
 import klein.shmulik.oti.data.QuizType
+import klein.shmulik.oti.data.Story
 
 class LetterUseCase {
     private val nikudEntries = HebrewAlphabet.generateNikudEntries()
@@ -18,6 +20,7 @@ class LetterUseCase {
     fun getAllLetters(): List<HebrewLetter> = HebrewAlphabet.letters
     fun getNikudEntries(): List<NikudEntry> = nikudEntries
     fun getAllWords(): List<HebrewWord> = HebrewWords.words
+    fun getAllStories(): List<Story> = HebrewStories.stories
 
     fun getLetter(index: Int): HebrewLetter? {
         val letters = HebrewAlphabet.letters
@@ -31,6 +34,11 @@ class LetterUseCase {
     fun getWord(index: Int): HebrewWord? {
         val words = HebrewWords.words
         return if (index in words.indices) words[index] else null
+    }
+
+    fun getStory(index: Int): Story? {
+        val stories = HebrewStories.stories
+        return if (index in stories.indices) stories[index] else null
     }
 
     fun getNextLetter(currentIndex: Int): Int {
@@ -61,9 +69,20 @@ class LetterUseCase {
         return if (currentIndex > 0) currentIndex - 1 else words.size - 1
     }
 
+    fun getNextStory(currentIndex: Int): Int {
+        val stories = HebrewStories.stories
+        return if (currentIndex < stories.size - 1) currentIndex + 1 else 0
+    }
+
+    fun getPreviousStory(currentIndex: Int): Int {
+        val stories = HebrewStories.stories
+        return if (currentIndex > 0) currentIndex - 1 else stories.size - 1
+    }
+
     fun getLetterCount(): Int = HebrewAlphabet.letters.size
     fun getNikudCount(): Int = nikudEntries.size
     fun getWordCount(): Int = HebrewWords.words.size
+    fun getStoryCount(): Int = HebrewStories.stories.size
 
     fun startQuiz(type: QuizType): List<QuizQuestion> {
         currentQuizType = type

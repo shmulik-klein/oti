@@ -2,6 +2,7 @@ package klein.shmulik.oti
 
 import klein.shmulik.oti.data.QuizQuestion
 import klein.shmulik.oti.data.QuizType
+import klein.shmulik.oti.data.Story
 import klein.shmulik.oti.domain.LetterUseCase
 import kotlinx.browser.document
 import kotlinx.browser.window
@@ -11,7 +12,7 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.KeyboardEvent
 
-enum class DisplayMode { LETTERS, NIKUD, WORDS, QUIZ }
+enum class DisplayMode { LETTERS, NIKUD, WORDS, STORIES, QUIZ }
 
 fun main() {
     val useCase = LetterUseCase()
@@ -21,6 +22,8 @@ fun main() {
     var quizScore = 0
     var quizAnswered = false
     var selectedQuizType = QuizType.LETTER_TO_NAME
+    var currentStoryIndex = 0
+    var currentStoryPageIndex = 0
 
     val letterElement = document.getElementById("letter") as HTMLElement
     val nameElement = document.getElementById("name") as HTMLElement
@@ -36,6 +39,7 @@ fun main() {
     val modeLettersBtn = document.getElementById("mode-letters") as HTMLButtonElement
     val modeNikudBtn = document.getElementById("mode-nikud") as HTMLButtonElement
     val modeWordsBtn = document.getElementById("mode-words") as HTMLButtonElement
+    val modeStoriesBtn = document.getElementById("mode-stories") as HTMLButtonElement
     val modeQuizBtn = document.getElementById("mode-quiz") as HTMLButtonElement
     val learnContainer = document.getElementById("learn-container") as HTMLElement
     val quizContainer = document.getElementById("quiz-container") as HTMLElement
@@ -47,6 +51,15 @@ fun main() {
     val quizNextButton = document.getElementById("quiz-next") as HTMLButtonElement
     val quizLetterNameBtn = document.getElementById("quiz-letter-name") as HTMLButtonElement
     val quizNameLetterBtn = document.getElementById("quiz-name-letter") as HTMLButtonElement
+    val storiesContainer = document.getElementById("stories-container") as HTMLElement
+    val storiesListElement = document.getElementById("stories-list") as HTMLElement
+    val storyReaderElement = document.getElementById("story-reader") as HTMLElement
+    val storyProgressElement = document.getElementById("story-progress") as HTMLElement
+    val storyPageTextElement = document.getElementById("story-page-text") as HTMLElement
+    val storyPageTranslationElement = document.getElementById("story-page-translation") as HTMLElement
+    val storyPrevButton = document.getElementById("story-prev") as HTMLButtonElement
+    val storyNextButton = document.getElementById("story-next") as HTMLButtonElement
+    val backToStoriesBtn = document.getElementById("back-to-stories") as HTMLButtonElement
 
     fun playAudio(fileName: String) {
         if (fileName.isNotEmpty()) {
@@ -87,6 +100,14 @@ fun main() {
                         playAudio(it.audioFile)
                     } else {
                         speakFallback(it.text)
+                    }
+                }
+            }
+            DisplayMode.STORIES -> {
+                val story = useCase.getStory(currentStoryIndex)
+                story?.let {
+                    if (currentStoryPageIndex in it.pages.indices) {
+                        speakFallback(it.pages[currentStoryPageIndex].hebrew)
                     }
                 }
             }
@@ -159,6 +180,43 @@ fun main() {
         }
     }
 
+    fun showStoryReader() {
+        storiesListElement.style.display = "none"
+        storyReaderElement.style.display = "block"
+        
+        val story = useCase.getStory(currentStoryIndex)
+        story?.let {
+            if (currentStoryPageIndex in it.pages.indices) {
+                val page = it.pages[currentStoryPageIndex]
+                storyProgressElement.textContent = "Page ${currentStoryPageIndex + 1} / ${it.pages.size}"
+                storyPageTextElement.textContent = page.hebrew
+                storyPageTranslationElement.textContent = page.translation
+            }
+        }
+    }
+
+    fun showStoriesList() {
+        storyReaderElement.style.display = "none"
+        storiesListElement.style.display = "block"
+        storiesListElement.innerHTML = ""
+        
+        val stories = useCase.getAllStories()
+        for ((index, story) in stories.withIndex()) {
+            val card = document.createElement("div")
+            card.className = "story-card"
+            card.innerHTML = """
+                <div class="story-title">${story.title}</div>
+                <div class="story-preview">${story.pages.size} pages</div>
+            """
+            card.addEventListener("click", { _: Event ->
+                currentStoryIndex = index
+                currentStoryPageIndex = 0
+                showStoryReader()
+            })
+            storiesListElement.appendChild(card)
+        }
+    }
+
     fun showQuizQuestion() {
         if (currentIndex >= quizQuestions.size) {
             quizQuestionElement.textContent = "Done!"
@@ -227,6 +285,38 @@ fun main() {
         updateDisplay()
     })
 
+    storyPrevButton.addEventListener("click", { _: Event ->
+        val story = useCase.getStory(currentStoryIndex)
+        story?.let {
+            if (currentStoryPageIndex > 0) {
+                currentStoryPageIndex--
+                showStoryReader()
+            } else if (currentStoryIndex > 0) {
+                currentStoryIndex--
+                currentStoryPageIndex = 0
+                showStoryReader()
+            }
+        }
+    })
+
+    storyNextButton.addEventListener("click", { _: Event ->
+        val story = useCase.getStory(currentStoryIndex)
+        story?.let {
+            if (currentStoryPageIndex < it.pages.size - 1) {
+                currentStoryPageIndex++
+                showStoryReader()
+            } else if (currentStoryIndex < useCase.getStoryCount() - 1) {
+                currentStoryIndex++
+                currentStoryPageIndex = 0
+                showStoryReader()
+            }
+        }
+    })
+
+    backToStoriesBtn.addEventListener("click", { _: Event ->
+        showStoriesList()
+    })
+
     quizNextButton.addEventListener("click", { _: Event ->
         if (quizNextButton.textContent == "Play Again") {
             startQuiz(selectedQuizType)
@@ -254,33 +344,38 @@ fun main() {
         modeLettersBtn.classList.remove("active")
         modeNikudBtn.classList.remove("active")
         modeWordsBtn.classList.remove("active")
+        modeStoriesBtn.classList.remove("active")
         modeQuizBtn.classList.remove("active")
+        
+        learnContainer.classList.remove("hidden")
+        quizContainer.classList.remove("active")
+        storiesContainer.classList.remove("active")
+        quizTypeContainer.style.display = "none"
         
         when (mode) {
             DisplayMode.LETTERS -> {
                 modeLettersBtn.classList.add("active")
                 learnContainer.classList.remove("hidden")
-                quizContainer.classList.remove("active")
-                quizTypeContainer.style.display = "none"
                 updateDisplay()
             }
             DisplayMode.NIKUD -> {
                 modeNikudBtn.classList.add("active")
                 learnContainer.classList.remove("hidden")
-                quizContainer.classList.remove("active")
-                quizTypeContainer.style.display = "none"
                 updateDisplay()
             }
             DisplayMode.WORDS -> {
                 modeWordsBtn.classList.add("active")
                 learnContainer.classList.remove("hidden")
-                quizContainer.classList.remove("active")
-                quizTypeContainer.style.display = "none"
                 updateDisplay()
+            }
+            DisplayMode.STORIES -> {
+                modeStoriesBtn.classList.add("active")
+                storiesContainer.classList.add("active")
+                learnContainer.classList.add("hidden")
+                showStoriesList()
             }
             DisplayMode.QUIZ -> {
                 modeQuizBtn.classList.add("active")
-                learnContainer.classList.add("hidden")
                 quizContainer.classList.add("active")
                 quizTypeContainer.style.display = "flex"
                 startQuiz(QuizType.LETTER_TO_NAME)
@@ -300,12 +395,16 @@ fun main() {
         setMode(DisplayMode.WORDS)
     })
 
+    modeStoriesBtn.addEventListener("click", { _: Event ->
+        setMode(DisplayMode.STORIES)
+    })
+
     modeQuizBtn.addEventListener("click", { _: Event ->
         setMode(DisplayMode.QUIZ)
     })
 
     window.addEventListener("keydown", { event: Event ->
-        if (currentMode == DisplayMode.QUIZ) return@addEventListener
+        if (currentMode == DisplayMode.QUIZ || currentMode == DisplayMode.STORIES) return@addEventListener
         
         val keyEvent = event as KeyboardEvent
         when (keyEvent.key) {

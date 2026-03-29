@@ -246,6 +246,66 @@
             font-weight: bold;
         }
         
+        .stories-container {
+            display: none;
+        }
+        
+        .stories-container.active {
+            display: block;
+        }
+        
+        .story-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .story-card:active {
+            transform: scale(0.98);
+        }
+        
+        .story-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .story-preview {
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .story-reader {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .story-page-text {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .story-page-translation {
+            font-size: 20px;
+            color: #888;
+            font-style: italic;
+        }
+        
+        .story-progress {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        
         @media (max-width: 600px) {
             .hebrew-letter {
                 font-size: 120px;
@@ -267,6 +327,7 @@
             <button class="mode-btn active" id="mode-letters">אוֹתִיּוֹת</button>
             <button class="mode-btn" id="mode-nikud">נִיקּוּד</button>
             <button class="mode-btn" id="mode-words">מִלִּים</button>
+            <button class="mode-btn" id="mode-stories">סִפּוּרִים</button>
             <button class="mode-btn" id="mode-quiz">חִבּוּר</button>
         </div>
         
@@ -303,6 +364,22 @@
             <div class="quiz-options" id="quiz-options"></div>
             <div class="quiz-nav">
                 <button class="nav-btn" id="quiz-next">Next</button>
+            </div>
+        </div>
+        
+        <div class="stories-container" id="stories-container">
+            <div class="stories-list" id="stories-list"></div>
+            <div class="story-reader" id="story-reader" style="display: none;">
+                <div class="story-progress" id="story-progress"></div>
+                <div class="story-page-text" id="story-page-text"></div>
+                <div class="story-page-translation" id="story-page-translation"></div>
+                <div class="navigation">
+                    <button class="nav-btn" id="story-prev">←</button>
+                    <button class="nav-btn" id="story-next">→</button>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button class="mode-btn" id="back-to-stories">Back to Stories</button>
+                </div>
             </div>
         </div>
     </div>
