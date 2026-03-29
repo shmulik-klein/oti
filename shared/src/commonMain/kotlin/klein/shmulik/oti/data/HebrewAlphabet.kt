@@ -1,4 +1,4 @@
-package com.hebrewreader.data
+package klein.shmulik.oti.data
 
 data class HebrewLetter(
     val character: String,

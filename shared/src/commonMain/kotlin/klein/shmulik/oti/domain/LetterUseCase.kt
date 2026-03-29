@@ -1,7 +1,7 @@
-package com.hebrewreader.domain
+package klein.shmulik.oti.domain
 
-import com.hebrewreader.data.HebrewAlphabet
-import com.hebrewreader.data.HebrewLetter
+import klein.shmulik.oti.data.HebrewAlphabet
+import klein.shmulik.oti.data.HebrewLetter
 
 class LetterUseCase {
     fun getAllLetters(): List<HebrewLetter> = HebrewAlphabet.letters

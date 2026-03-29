@@ -1,6 +1,6 @@
-package com.hebrewreader
+package klein.shmulik.oti
 
-import com.hebrewreader.domain.LetterUseCase
+import klein.shmulik.oti.domain.LetterUseCase
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.w3c.dom.HTMLButtonElement
