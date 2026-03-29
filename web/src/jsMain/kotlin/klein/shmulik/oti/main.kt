@@ -3,6 +3,7 @@ package klein.shmulik.oti
 import klein.shmulik.oti.domain.LetterUseCase
 import kotlinx.browser.document
 import kotlinx.browser.window
+import org.w3c.dom.HTMLAudioElement
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
@@ -25,15 +26,45 @@ fun main() {
     val modeLettersBtn = document.getElementById("mode-letters") as HTMLButtonElement
     val modeNikudBtn = document.getElementById("mode-nikud") as HTMLButtonElement
 
-    @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
-    val synth = window.asDynamic().speechSynthesis
+    fun playAudio(fileName: String) {
+        if (fileName.isNotEmpty()) {
+            val audioPath = "audio/${fileName}"
+            @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+            val audio = window.asDynamic().Audio(audioPath) as HTMLAudioElement
+            audio.play()
+        }
+    }
 
-    fun speak(text: String) {
+    fun speakFallback(text: String) {
+        @Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+        val synth = window.asDynamic().speechSynthesis
         if (synth != undefined) {
             synth.cancel()
-            val utterance = js("new SpeechSynthesisUtterance(text)")
+            val utterance = window.asDynamic().SpeechSynthesisUtterance(text)
             utterance.lang = "he-IL"
             synth.speak(utterance)
+        }
+    }
+
+    fun speakCurrent() {
+        if (isNikudMode) {
+            val entry = useCase.getNikudEntry(currentIndex)
+            entry?.let {
+                if (it.audioFile.isNotEmpty()) {
+                    playAudio(it.audioFile)
+                } else {
+                    speakFallback(it.audioText)
+                }
+            }
+        } else {
+            val letter = useCase.getLetter(currentIndex)
+            letter?.let {
+                if (it.audioFile.isNotEmpty()) {
+                    playAudio(it.audioFile)
+                } else {
+                    speakFallback(it.name)
+                }
+            }
         }
     }
 
@@ -58,16 +89,6 @@ fun main() {
                 currentElement.textContent = (currentIndex + 1).toString()
                 totalElement.textContent = useCase.getLetterCount().toString()
             }
-        }
-    }
-
-    fun speakCurrent() {
-        if (isNikudMode) {
-            val entry = useCase.getNikudEntry(currentIndex)
-            entry?.let { speak(it.audioText) }
-        } else {
-            val letter = useCase.getLetter(currentIndex)
-            letter?.let { speak(it.name) }
         }
     }
 
