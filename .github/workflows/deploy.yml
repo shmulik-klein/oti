@@ -19,7 +19,7 @@ jobs:
           cache: 'gradle'
           cache-dependency-path: | # optional
             gradle/wrapper/*.gradle*
-            grale/wrapper/**/gradle-wrapper.properties
+            gradle/wrapper/**/gradle-wrapper.properties
       - run: ./gradlew :web:build
 
       - name: Deploy to Netlify
