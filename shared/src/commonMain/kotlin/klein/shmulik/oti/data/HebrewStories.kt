@@ -16,131 +16,231 @@ object HebrewStories {
     val stories = listOf(
         Story(
             id = 1,
-            title = "הַיָּם הַגָּדוֹל",
+            title = "הנזל וגרטל",
             pages = listOf(
                 StoryPage(
-                    "יֵשׁ יָם גָּדוֹל.",
-                    "There is a big sea."
+                    "יְלָדִים הָיוּ בַּכֹּפֶר.",
+                    "There were children in the village."
                 ),
                 StoryPage(
-                    "בַּיָּם יֵשׁ דָּגִים רַבִּים.",
-                    "In the sea there are many fish."
+                    "שֵׁם הַיָּלָד הָאָחִים הָיָה הַנְּזָל וְגִרְטֵל.",
+                    "The children's names were Hansel and Gretel."
                 ),
                 StoryPage(
-                    "הַדָּג שָׁחֶה בַּמַּיִם.",
-                    "The fish swims in the water."
+                    "אָבָא וְאֵם הָיוּ עֲנִיִּים.",
+                    "Father and mother were poor."
                 ),
                 StoryPage(
-                    "הַחֲתוּל שָׁם עַל הַסֶּלַע.",
-                    "The cat sits on the rock."
+                    "בַּיּוֹם הָרִאשׁוֹן הָלְכוּ הַיְּלָדִים לַיָּעַר.",
+                    "On the first day, the children went to the forest."
                 ),
                 StoryPage(
-                    "שָׁלוֹם לַיָּם!",
-                    "Peace to the sea!"
+                    "הֵם מָצְאוּ בַּיִת קָטָן מִסּוֹכֶר.",
+                    "They found a small house made of candy."
+                ),
+                StoryPage(
+                    "אִמָּה הָרְעָה גַּרָה בַּבַּיִת.",
+                    "The evil stepmother lived in the house."
+                ),
+                StoryPage(
+                    "הִיא לָקְחָה אֶת גִרְטֵל לַתּוֹךְ הַבַּיִת.",
+                    "She took Gretel inside the house."
+                ),
+                StoryPage(
+                    "הַנְּזָל בָּרַח מִן הַבַּיִת.",
+                    "Hansel ran away from the house."
+                ),
+                StoryPage(
+                    "הֵם מָצְאוּ אֶת הַדֶּרֶךְ הַבַּיְתָה.",
+                    "They found the way home."
+                ),
+                StoryPage(
+                    "הַמִּשְׁפָּחָה הָיְתָה שָׂמֵחָה.",
+                    "The family was happy."
                 )
             )
         ),
         Story(
             id = 2,
-            title = "הַבַּיִת שֶׁלִּי",
+            title = "כובע אדום",
             pages = listOf(
                 StoryPage(
-                    "זֶה הַבַּיִת שֶׁלִּי.",
-                    "This is my house."
+                    "יַלְדָּה קְטַנָּה גָּרָה בַּכֹּפֶר.",
+                    "A little girl lived in the village."
                 ),
                 StoryPage(
-                    "בַּבַּיִת יֵשׁ דֶּלֶת וְחַלּוֹן.",
-                    "In the house there is a door and a window."
+                    "סָבְתָא נָתְנָה לָהּ כּוֹבַע אָדוּם יָפֶה.",
+                    "Grandmother gave her a beautiful red hat."
                 ),
                 StoryPage(
-                    "אָבָא בַּבָּיִת.",
-                    "Father is in the house."
+                    "יוֹם אֶחָד הַלְּכָה הַיַּלְדָּה לְבַקֵּר אֶת סָבְתָא.",
+                    "One day, the girl went to visit grandmother."
                 ),
                 StoryPage(
-                    "אֵם בַּבָּיִת.",
-                    "Mother is in the house."
+                    "בַּדֶּרֶךְ פָּגְשָׁה זְאֵב גָּדוֹל.",
+                    "On the way, she met a big wolf."
                 ),
                 StoryPage(
-                    "אֲנִי אוֹהֵב אֶת הַבַּיִת.",
-                    "I love the house."
+                    "\"לְאָן אַתְּ הוֹלֶכֶת?\" שָׁאַל הַזְּאֵב.",
+                    "\"Where are you going?\" asked the wolf."
+                ),
+                StoryPage(
+                    "\"אֲנִי הוֹלֶכֶת לְבַקֵּר אֶת סָבְתָא,\" עָנְתָה הַיַּלְדָּה.",
+                    "\"I'm going to visit grandmother,\" answered the girl."
+                ),
+                StoryPage(
+                    "הַזְּאֵב אָכַל אֶת הַסָּבָה.",
+                    "The wolf ate the grandmother."
+                ),
+                StoryPage(
+                    "צַיָּד בָּא לִתְרוֹץ אֶת הַזְּאֵב.",
+                    "A hunter came to save the wolf."
+                ),
+                StoryPage(
+                    "הַיַּלְדָּה נִצְלָה.",
+                    "The girl was saved."
+                ),
+                StoryPage(
+                    "מֵאָז הִיא תָּמִיד שָׁמְרָה עַל עַצְמָהּ.",
+                    "Since then, she always took care of herself."
                 )
             )
         ),
         Story(
             id = 3,
-            title = "בַּגָּן",
+            title = "שלושה חזירונים",
             pages = listOf(
                 StoryPage(
-                    "אֲנִי בַּגָּן.",
-                    "I am in the garden."
+                    "שְׁלוֹשָׁה חֲזִירוֹנִים גָּרוּ בַּיָּעַר.",
+                    "Three little pigs lived in the forest."
                 ),
                 StoryPage(
-                    "בַּגָּן יֵשׁ עֵץ גָּדוֹל.",
-                    "In the garden there is a big tree."
+                    "הֵם הֶחֱלִיטוּ לִבְנוֹת בָּתִּים.",
+                    "They decided to build houses."
                 ),
                 StoryPage(
-                    "עַל הָעֵץ יֵשׁ צִפּוֹר.",
-                    "On the tree there is a bird."
+                    "הָרִאשׁוֹן בָּנָה בַּיִת מִקַּשׁ.",
+                    "The first built a house of straw."
                 ),
                 StoryPage(
-                    "הַצִפּוֹר שָׁרָה שִׁיר.",
-                    "The bird sings a song."
+                    "הַשֵּׁנִי בָּנָה בַּיִת מִקּוֹרוֹת עֵץ.",
+                    "The second built a house of wood."
                 ),
                 StoryPage(
-                    "הַפֶּרַח יָפֶה.",
-                    "The flower is beautiful."
+                    "הַשְּׁלִישִׁי בָּנָה בַּיִת מֵאֲבָנִים.",
+                    "The third built a house of stones."
+                ),
+                StoryPage(
+                    "זְאֵב גָּדוֹל בָּא לְהַפְחִיד אוֹתָם.",
+                    "A big wolf came to scare them."
+                ),
+                StoryPage(
+                    "הַזְּאֵב נָפַח עַל בֵּית הַקַּשׁ, וְהוּא נָפָל.",
+                    "The wolf blew on the straw house, and it fell."
+                ),
+                StoryPage(
+                    "הַזְּאֵב נָפַח עַל בֵּית הַקּוֹרוֹת, וְהוּא נָפָל.",
+                    "The wolf blew on the wood house, and it fell."
+                ),
+                StoryPage(
+                    "הַזְּאֵב לֹא יָכוֹל לְהַפִּיל אֶת בֵּית הָאֲבָנִים.",
+                    "The wolf could not blow down the stone house."
+                ),
+                StoryPage(
+                    "הַחֲזִירוֹנִים הָיוּ בְּטוּחִים בְּבֵיתָם.",
+                    "The little pigs were safe in their house."
                 )
             )
         ),
         Story(
             id = 4,
-            title = "הַכֶּלֶב וְהַחֲתוּל",
+            title = "הרועה והגמדים",
             pages = listOf(
                 StoryPage(
-                    "יֵשׁ לִי כֶּלֶב קָטָן.",
-                    "I have a small dog."
+                    "רוֹעֶה צֹאן הָלַךְ בַּהָרִים.",
+                    "A shepherd walked in the mountains."
                 ),
                 StoryPage(
-                    "שֵׁם הַכֶּלֶב רֵי.",
-                    "The dog's name is Roy."
+                    "הוּא מָצָא מְעָרָה קְטַנָּה בַּסֶּלַע.",
+                    "He found a small cave in the rock."
                 ),
                 StoryPage(
-                    "הַכֶּלֶב אוֹהֵב לָרוּץ.",
-                    "The dog loves to run."
+                    "בִּמְעָרָה גָּרוּ גַּמְדִים קְטַנִּים.",
+                    "Little dwarfs lived in the cave."
                 ),
                 StoryPage(
-                    "גַּם הַחֲתוּל שָׁם.",
-                    "The cat is there too."
+                    "הַגַּמְדִים עָבְדוּ כָּל הַיּוֹם.",
+                    "The dwarfs worked all day."
                 ),
                 StoryPage(
-                    "הֵם חֲבֵרִים טוֹבִים.",
-                    "They are good friends."
+                    "הֵם זָהָב לְמַלֵךְ עָשׂוּ.",
+                    "They made gold for the king."
+                ),
+                StoryPage(
+                    "יוֹם אֶחָד הַמֶּלֶךְ גִּירֵשׁ אֶת הָרוֹעֶה.",
+                    "One day, the king chased the shepherd away."
+                ),
+                StoryPage(
+                    "הָרוֹעֶה חָזַר לִמְעָרָה.",
+                    "The shepherd returned to the cave."
+                ),
+                StoryPage(
+                    "הַגַּמְדִים נְתָנוּ לוֹ כֶּסֶף הַרְבֵּה.",
+                    "The dwarfs gave him a lot of money."
+                ),
+                StoryPage(
+                    "הָרוֹעֶה הָיָה עַתָּה עָשִׁיר.",
+                    "The shepherd was now rich."
+                ),
+                StoryPage(
+                    "הוּא חָיָה בְּאֹשֶׁר לְעוֹלָם.",
+                    "He lived happily forever."
                 )
             )
         ),
         Story(
             id = 5,
-            title = "יוֹם טוֹב",
+            title = "הדייג ואשתו",
             pages = listOf(
                 StoryPage(
-                    "בּוֹקֶר טוֹב!",
-                    "Good morning!"
+                    "דַּיָּג אֶחָד גָּר לְיַד הַיָּם.",
+                    "A fisherman lived by the sea."
                 ),
                 StoryPage(
-                    "הַשֶּׁמֶשׁ זוֹרַחַת.",
-                    "The sun is rising."
+                    "אִשְׁתּוֹ הָיְתָה עֲנִיָּה מְאוֹד.",
+                    "His wife was very poor."
                 ),
                 StoryPage(
-                    "אֲנִי אוֹכֵל לֶחֶם.",
-                    "I eat bread."
+                    "יוֹם אֶחָד תָּפַס דָּג קָסָם.",
+                    "One day, he caught a magic fish."
                 ),
                 StoryPage(
-                    "אֲנִי שׁוֹתֶה מַיִם.",
-                    "I drink water."
+                    "הַדָּג אָמַר: \"אֶתָּנְךָ כָּל מָה שֶׁתִּרְצֶה!\"",
+                    "The fish said: \"I will give you everything you want!\""
                 ),
                 StoryPage(
-                    "יוֹם טוֹב!",
-                    "Good day!"
+                    "הַדַּיָּג שָׁחַר אוֹתוֹ וְהָלַךְ הַבַּיְתָה.",
+                    "The fisherman released him and went home."
+                ),
+                StoryPage(
+                    "אִשְׁתּוֹ רָצְתָה בַּיִת גָּדוֹל.",
+                    "His wife wanted a big house."
+                ),
+                StoryPage(
+                    "הַדַּיָּג חָזַר לַיָּם וּבִקֵּשׁ.",
+                    "The fisherman went back to the sea and asked."
+                ),
+                StoryPage(
+                    "הַבַּיִת הֻגְדַּל פִּתְאוֹם.",
+                    "The house suddenly became big."
+                ),
+                StoryPage(
+                    "אֲבָל הַדַּיָּג לֹא רָצָה יוֹתֵר.",
+                    "But the fisherman didn't want more."
+                ),
+                StoryPage(
+                    "הוּא וְאִשְׁתּוֹ חָיוּ בְּשָׁלוֹם.",
+                    "He and his wife lived in peace."
                 )
             )
         )
