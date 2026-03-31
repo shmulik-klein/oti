@@ -23,7 +23,6 @@ fun main() {
     var quizAnswered = false
     var selectedQuizType = QuizType.LETTER_TO_NAME
     var currentStoryIndex = 0
-    var currentStoryPageIndex = 0
 
     val letterElement = document.getElementById("letter") as HTMLElement
     val nameElement = document.getElementById("name") as HTMLElement
@@ -54,11 +53,8 @@ fun main() {
     val storiesContainer = document.getElementById("stories-container") as HTMLElement
     val storiesListElement = document.getElementById("stories-list") as HTMLElement
     val storyReaderElement = document.getElementById("story-reader") as HTMLElement
-    val storyProgressElement = document.getElementById("story-progress") as HTMLElement
-    val storyPageTextElement = document.getElementById("story-page-text") as HTMLElement
-    val storyPageTranslationElement = document.getElementById("story-page-translation") as HTMLElement
-    val storyPrevButton = document.getElementById("story-prev") as HTMLButtonElement
-    val storyNextButton = document.getElementById("story-next") as HTMLButtonElement
+    val storyFullTextElement = document.getElementById("story-full-text") as HTMLElement
+    val storyFullTranslationElement = document.getElementById("story-full-translation") as HTMLElement
     val backToStoriesBtn = document.getElementById("back-to-stories") as HTMLButtonElement
 
     fun playAudio(fileName: String) {
@@ -106,9 +102,8 @@ fun main() {
             DisplayMode.STORIES -> {
                 val story = useCase.getStory(currentStoryIndex)
                 story?.let {
-                    if (currentStoryPageIndex in it.pages.indices) {
-                        speakFallback(it.pages[currentStoryPageIndex].hebrew)
-                    }
+                    val allText = it.pages.joinToString(" ") { page -> page.hebrew }
+                    speakFallback(allText)
                 }
             }
             else -> {
@@ -186,12 +181,10 @@ fun main() {
         
         val story = useCase.getStory(currentStoryIndex)
         story?.let {
-            if (currentStoryPageIndex in it.pages.indices) {
-                val page = it.pages[currentStoryPageIndex]
-                storyProgressElement.textContent = "Page ${currentStoryPageIndex + 1} / ${it.pages.size}"
-                storyPageTextElement.textContent = page.hebrew
-                storyPageTranslationElement.textContent = page.translation
-            }
+            val allHebrew = it.pages.joinToString(" ") { page -> page.hebrew }
+            val allTranslation = it.pages.joinToString("\n") { page -> page.translation }
+            storyFullTextElement.textContent = allHebrew
+            storyFullTranslationElement.textContent = allTranslation
         }
     }
 
@@ -204,13 +197,14 @@ fun main() {
         for ((index, story) in stories.withIndex()) {
             val card = document.createElement("div")
             card.className = "story-card"
+            val allText = story.pages.joinToString(" ") { page -> page.hebrew }
+            val preview = if (allText.length > 100) allText.substring(0, 100) + "..." else allText
             card.innerHTML = """
                 <div class="story-title">${story.title}</div>
-                <div class="story-preview">${story.pages.size} pages</div>
+                <div class="story-preview">$preview</div>
             """
             card.addEventListener("click", { _: Event ->
                 currentStoryIndex = index
-                currentStoryPageIndex = 0
                 showStoryReader()
             })
             storiesListElement.appendChild(card)
@@ -283,34 +277,6 @@ fun main() {
     nextButton.addEventListener("click", { _: Event ->
         currentIndex = getNextIndex()
         updateDisplay()
-    })
-
-    storyPrevButton.addEventListener("click", { _: Event ->
-        val story = useCase.getStory(currentStoryIndex)
-        story?.let {
-            if (currentStoryPageIndex > 0) {
-                currentStoryPageIndex--
-                showStoryReader()
-            } else if (currentStoryIndex > 0) {
-                currentStoryIndex--
-                currentStoryPageIndex = 0
-                showStoryReader()
-            }
-        }
-    })
-
-    storyNextButton.addEventListener("click", { _: Event ->
-        val story = useCase.getStory(currentStoryIndex)
-        story?.let {
-            if (currentStoryPageIndex < it.pages.size - 1) {
-                currentStoryPageIndex++
-                showStoryReader()
-            } else if (currentStoryIndex < useCase.getStoryCount() - 1) {
-                currentStoryIndex++
-                currentStoryPageIndex = 0
-                showStoryReader()
-            }
-        }
     })
 
     backToStoriesBtn.addEventListener("click", { _: Event ->

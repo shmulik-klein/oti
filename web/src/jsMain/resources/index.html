@@ -285,23 +285,25 @@
             padding: 40px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             margin-bottom: 30px;
+            max-height: 70vh;
+            overflow-y: auto;
         }
         
-        .story-page-text {
+        .story-full-text {
             font-size: 36px;
             color: #333;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            text-align: right;
         }
         
-        .story-page-translation {
+        .story-full-translation {
             font-size: 20px;
             color: #888;
             font-style: italic;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
         }
-        
-        .story-progress {
-            font-size: 16px;
             color: #aaa;
             margin-bottom: 20px;
         }
@@ -370,13 +372,8 @@
         <div class="stories-container" id="stories-container">
             <div class="stories-list" id="stories-list"></div>
             <div class="story-reader" id="story-reader" style="display: none;">
-                <div class="story-progress" id="story-progress"></div>
-                <div class="story-page-text" id="story-page-text"></div>
-                <div class="story-page-translation" id="story-page-translation"></div>
-                <div class="navigation">
-                    <button class="nav-btn" id="story-prev">←</button>
-                    <button class="nav-btn" id="story-next">→</button>
-                </div>
+                <div class="story-full-text" id="story-full-text"></div>
+                <div class="story-full-translation" id="story-full-translation"></div>
                 <div style="margin-top: 20px;">
                     <button class="mode-btn" id="back-to-stories">Back to Stories</button>
                 </div>
