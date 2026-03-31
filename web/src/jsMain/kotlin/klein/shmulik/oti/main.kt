@@ -16,6 +16,7 @@ enum class DisplayMode { LETTERS, NIKUD, WORDS, STORIES, QUIZ }
 
 fun main() {
     val useCase = LetterUseCase()
+    val storyLoader = StoryLoader()
     var currentIndex = 0
     var currentMode = DisplayMode.LETTERS
     var quizQuestions: List<QuizQuestion> = emptyList()
@@ -23,6 +24,8 @@ fun main() {
     var quizAnswered = false
     var selectedQuizType = QuizType.LETTER_TO_NAME
     var currentStoryIndex = 0
+    var storiesLoaded = false
+    var currentStory: Story? = null
 
     val letterElement = document.getElementById("letter") as HTMLElement
     val nameElement = document.getElementById("name") as HTMLElement
@@ -100,8 +103,7 @@ fun main() {
                 }
             }
             DisplayMode.STORIES -> {
-                val story = useCase.getStory(currentStoryIndex)
-                story?.let {
+                currentStory?.let {
                     val allText = it.pages.joinToString(" ") { page -> page.hebrew }
                     speakFallback(allText)
                 }
@@ -179,13 +181,17 @@ fun main() {
         storiesListElement.style.display = "none"
         storyReaderElement.style.display = "block"
         
-        val story = useCase.getStory(currentStoryIndex)
-        story?.let {
-            val allHebrew = it.pages.joinToString(" ") { page -> page.hebrew }
-            val allTranslation = it.pages.joinToString("\n") { page -> page.translation }
-            storyFullTextElement.textContent = allHebrew
-            storyFullTranslationElement.textContent = allTranslation
-        }
+        storyLoader.loadStory(currentStoryIndex, { story ->
+            story?.let {
+                currentStory = it
+                val allHebrew = it.pages.joinToString(" ") { page -> page.hebrew }
+                val allTranslation = it.pages.joinToString("\n") { page -> page.translation }
+                storyFullTextElement.textContent = allHebrew
+                storyFullTranslationElement.textContent = allTranslation
+            }
+        }, { error ->
+            console.error(error)
+        })
     }
 
     fun showStoriesList() {
@@ -193,21 +199,32 @@ fun main() {
         storiesListElement.style.display = "block"
         storiesListElement.innerHTML = ""
         
-        val stories = useCase.getAllStories()
-        for ((index, story) in stories.withIndex()) {
-            val card = document.createElement("div")
-            card.className = "story-card"
-            val allText = story.pages.joinToString(" ") { page -> page.hebrew }
-            val preview = if (allText.length > 100) allText.substring(0, 100) + "..." else allText
-            card.innerHTML = """
-                <div class="story-title">${story.title}</div>
-                <div class="story-preview">$preview</div>
-            """
-            card.addEventListener("click", { _: Event ->
-                currentStoryIndex = index
-                showStoryReader()
+        if (!storiesLoaded) {
+            storiesListElement.innerHTML = "<div class='story-preview'>Loading stories...</div>"
+            storyLoader.loadStoriesIndex({
+                storiesLoaded = true
+                showStoriesList()
+            }, { error ->
+                storiesListElement.innerHTML = "<div class='story-preview'>Error loading stories: $error</div>"
             })
-            storiesListElement.appendChild(card)
+            return
+        }
+
+        for (index in 0 until storyLoader.getStoryCount()) {
+            val storyInfo = storyLoader.getStoryInfo(index)
+            storyInfo?.let { info ->
+                val card = document.createElement("div")
+                card.className = "story-card"
+                card.innerHTML = """
+                    <div class="story-title">${info.title}</div>
+                    <div class="story-preview">Click to load story</div>
+                """
+                card.addEventListener("click", { _: Event ->
+                    currentStoryIndex = index
+                    showStoryReader()
+                })
+                storiesListElement.appendChild(card)
+            }
         }
     }
 
@@ -280,6 +297,7 @@ fun main() {
     })
 
     backToStoriesBtn.addEventListener("click", { _: Event ->
+        currentStory = null
         showStoriesList()
     })
 

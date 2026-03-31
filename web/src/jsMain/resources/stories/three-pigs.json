@@ -1,0 +1,16 @@
+{
+  "id": 3,
+  "title": "שלושה חזירונים",
+  "pages": [
+    { "hebrew": "שְׁלוֹשָׁה חֲזִירוֹנִים גָּרוּ בַּיָּעַר.", "translation": "Three little pigs lived in the forest." },
+    { "hebrew": "הֵם הֶחֱלִיטוּ לִבְנוֹת בָּתִּים.", "translation": "They decided to build houses." },
+    { "hebrew": "הָרִאשׁוֹן בָּנָה בַּיִת מִקַּשׁ.", "translation": "The first built a house of straw." },
+    { "hebrew": "הַשֵּׁנִי בָּנָה בַּיִת מִקּוֹרוֹת עֵץ.", "translation": "The second built a house of wood." },
+    { "hebrew": "הַשְּׁלִישִׁי בָּנָה בַּיִת מֵאֲבָנִים.", "translation": "The third built a house of stones." },
+    { "hebrew": "זְאֵב גָּדוֹל בָּא לְהַפְחִיד אוֹתָם.", "translation": "A big wolf came to scare them." },
+    { "hebrew": "הַזְּאֵב נָפַח עַל בֵּית הַקַּשׁ, וְהוּא נָפָל.", "translation": "The wolf blew on the straw house, and it fell." },
+    { "hebrew": "הַזְּאֵב נָפַח עַל בֵּית הַקּוֹרוֹת, וְהוּא נָפָל.", "translation": "The wolf blew on the wood house, and it fell." },
+    { "hebrew": "הַזְּאֵב לֹא יָכוֹל לְהַפִּיל אֶת בֵּית הָאֲבָנִים.", "translation": "The wolf could not blow down the stone house." },
+    { "hebrew": "הַחֲזִירוֹנִים הָיוּ בְּטוּחִים בְּבֵיתָם.", "translation": "The little pigs were safe in their house." }
+  ]
+}
