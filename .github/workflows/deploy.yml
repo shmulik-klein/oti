@@ -15,12 +15,12 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '25'
+          java-version: '21'
           cache: 'gradle'
-          cache-dependency-path: | # optional
+          cache-dependency-path: |
             gradle/wrapper/*.gradle*
             gradle/wrapper/**/gradle-wrapper.properties
-      - run: ./gradlew :web:build
+      - run: ./gradlew :web:build --stacktrace --info
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
